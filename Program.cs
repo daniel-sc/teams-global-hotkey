@@ -23,40 +23,29 @@ const uint WM_GETTEXT = 0x000D;
 const uint WM_KEYDOWN = 0x100;
 const uint WM_KEYUP = 0x0101;
 
-
-/*
-Process[] processlist = Process.GetProcesses();
-
-foreach (Process process in processlist)
-{
-    if (!String.IsNullOrEmpty(process.MainWindowTitle))
-    {
-        Console.WriteLine("Process: {0} ID: {1} Window title: {2}", process.ProcessName, process.Id, process.MainWindowTitle);
-    }
-}*/
-
-
-
 HotKeyManager.RegisterHotKey(Keys.M, KeyModifiers.Alt | KeyModifiers.Control | KeyModifiers.Shift);
 HotKeyManager.HotKeyPressed += new EventHandler<HotKeyEventArgs>(HotKeyManager_HotKeyPressed);
-Console.ReadLine();
+
+Console.WriteLine("Listening on hotkey CTRL+SHIFT+ALT+M..");
+Console.WriteLine("Exit with CTRL+c");
+await Task.Delay(Timeout.Infinite).ConfigureAwait(false);
 
 
 static void HotKeyManager_HotKeyPressed(object sender, HotKeyEventArgs e)
 {
     DateTime start = DateTime.UtcNow;
-    Console.WriteLine("finding window..");
+    //Console.WriteLine("finding window..");
     Process? p = findProcess();
     DateTime afterFindProcess = DateTime.UtcNow;
 
-    Console.WriteLine("findProcess: {0} ms", Convert.ToInt32((afterFindProcess - start).TotalMilliseconds));
+    //Console.WriteLine("findProcess: {0} ms", Convert.ToInt32((afterFindProcess - start).TotalMilliseconds));
     Console.WriteLine("\nTeams process: {0}", p?.Id);
     if (p != null)
     {
         IntPtr? w = findCallWindow(p);
         DateTime afterFindWindow = DateTime.UtcNow;
 
-        Console.WriteLine("findWindow: {0} ms", Convert.ToInt32((afterFindWindow - afterFindProcess).TotalMilliseconds));
+        //Console.WriteLine("findWindow: {0} ms", Convert.ToInt32((afterFindWindow - afterFindProcess).TotalMilliseconds));
         if (w != null)
         {
             Console.WriteLine("found call window: {0}", w);
